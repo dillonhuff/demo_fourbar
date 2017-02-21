@@ -23,6 +23,8 @@ function doubleWithinEps( x, y, eps ) {
 }
 
 function solveTheta4(quad, theta_val) {
+    //return theta_val;
+
     var r1 = ( minus( bPos(quad), aPos(quad) ) ).length();
     var r2 = acLen(quad);
     var r3 = cdLen(quad);
@@ -51,12 +53,12 @@ function solveTheta4(quad, theta_val) {
 
     //alert('psi_num = ' + psi_num);
 
-    var psi = psi_num / psi_denom;
+    var psi = Math.acos(psi_num / psi_denom);
 
     //alert('psi_in_deg = ' + psi_in_deg);
 
     var alpha =
-	(r7sq + r1*r1 - r2*r2) / (2*r1*r7);
+	Math.acos(r2*r2 - r7sq - r1*r1 / (2*r1*r7));
 
     if (doubleWithinEps(theta_2, Math.PI / 2.0, Math.PI / 2.0)) {
     	//alert('within eps');
@@ -117,11 +119,11 @@ function rotateOffRef(center,
 function solveCDPos(quad, theta) {
     var c = cPos(quad, theta);
 
-    //var theta4 = solveTheta4(quad, theta);
+    var theta4 = solveTheta4(quad, theta);
     var d = rotateOffRef(bPos(quad),
 			 normalize( minus(bPos(quad), aPos(quad)) ),
 			 bdLen(quad),
-			 theta); //theta4);
+			 theta4);
 
     return [c, d];
 }
