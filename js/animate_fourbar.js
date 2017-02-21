@@ -105,6 +105,9 @@ function animate() {
 
     requestAnimationFrame( animate );
 
+    addLine(scene, theta_2);
+    theta_2 = theta_2 + phase_inc;
+
     render();
     controls.update();
 
@@ -139,6 +142,6 @@ function addLine(sc, th) {
 
     var bb = new THREE.Box3();
     bb.setFromObject( stockLines );
-    bb.center(controls.target);
+    //bb.center(controls.target);
 
 }
