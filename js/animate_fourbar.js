@@ -7,6 +7,8 @@ var container;
 var camera, cameraTarget, scene, renderer, controls;
 
 var theta_2, phase_inc;
+var lineGeom, lineMat, stockLines;
+
 
 init();
 animate();
@@ -15,6 +17,14 @@ function init() {
     theta_2 = 0;
     phase_inc = Math.PI / 30;
 
+    lineGeom = new THREE.Geometry();
+
+    lineMat = new THREE.LineBasicMaterial({
+	color: 0x000000
+    });    
+
+    stockLines = new THREE.Line( lineGeom, lineMat );
+    
     container = document.createElement( 'div' );
     document.body.appendChild( container );
 
@@ -34,6 +44,8 @@ function init() {
 
     scene = new THREE.Scene();
 
+    scene.add(stockLines);
+    
     var fog_color = 0xfefefe;
 
 
@@ -127,21 +139,14 @@ function render() {
 }
 
 function addLine(sc, th) {
-    var a = new THREE.Vector3(0, 0, 0);
     var b = new THREE.Vector3(Math.sin(th), Math.cos(th), 0);
 
-    var lineMat = new THREE.LineBasicMaterial({
-	color: 0x000000
-    });    
-
-    var lineGeom = new THREE.Geometry();
-    lineGeom.vertices.push(a, b);
-
-    var stockLines = new THREE.Line( lineGeom, lineMat );
-    sc.add(stockLines);
-
-    var bb = new THREE.Box3();
-    bb.setFromObject( stockLines );
-    //bb.center(controls.target);
+    if (stockLines.geometry.vertices.length == 0) {
+	var a = new THREE.Vector3(0, 0, 0);
+	stockLines.geometry.vertices.push(a, b);
+    } else {
+	stockLines.geometry.vertices[1] = b;
+    }
+    stockLines.geometry.verticesNeedUpdate = true;
 
 }
