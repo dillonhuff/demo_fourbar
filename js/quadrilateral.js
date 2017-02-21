@@ -75,7 +75,7 @@ function solveTheta4(quad, theta_val) {
 
     alert('psi = ' + psi + '\nalpha = ' + alpha);
 
-    if (doubleWithinEps(theta_2, Math.PI / 2.0, Math.PI / 2.0)) {
+    if (!doubleWithinEps(theta_2, Math.PI / 2.0, Math.PI / 2.0)) {
     	//alert('within eps');
     	alpha = Math.abs(alpha);
     	psi = Math.abs(psi);
@@ -134,7 +134,7 @@ function rotateOffRef(center,
 function solveCDPos(quad, theta) {
     var c = cPos(quad, theta);
 
-    var theta4 = solveTheta4(quad, Math.PI / 2.0); //theta);
+    var theta4 = solveTheta4(quad, theta); //Math.PI / 2.0); //theta);
     var d = rotateOffRef(bPos(quad),
 			 normalize( minus(bPos(quad), aPos(quad)) ),
 			 bdLen(quad),
