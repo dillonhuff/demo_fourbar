@@ -13,7 +13,8 @@ function acLen(q) { return q.ac_len; }
 function cdLen(q) { return q.cd_len; }
 
 function cPos(q, th) {
-    return new THREE.Vector3(q.ac_len*Math.sin(th), q.ac_len*Math.cos(th), 0);
+    var k = minus( bPos(q), aPos(q) );
+    return rotateOffRef( aPos(q), k, acLen(q), th);
 }
 
 function doubleWithinEps( x, y, eps ) {
@@ -21,11 +22,13 @@ function doubleWithinEps( x, y, eps ) {
     return diff < eps;
 }
 
-function solveTheta4(quad, theta) {
+function solveTheta4(quad, theta_val) {
     var r1 = ( minus( bPos(quad), aPos(quad) ) ).length();
     var r2 = acLen(quad);
     var r3 = cdLen(quad);
     var r4 = bdLen(quad);
+
+    var theta = theta_val / Math.PI;
 
     var cos_theta = Math.cos( theta );
 
@@ -55,12 +58,12 @@ function solveTheta4(quad, theta) {
     var alpha_in_deg =
 	(r7sq + r1*r1 - r2*r2) / (2*r1*r7);
 
-    if (doubleWithinEps(theta_2, 90.0, 90.0)) {
-	alpha_in_deg = Math.abs(alpha_in_deg);
-	psi_in_deg = Math.abs(psi_in_deg);
+    if (doubleWithinEps(theta_2, Math.PI / 2.0, Math.PI / 2.0)) {
+    	alpha_in_deg = Math.abs(alpha_in_deg);
+    	psi_in_deg = Math.abs(psi_in_deg);
     } else {
-	alpha_in_deg = -1*Math.abs(alpha_in_deg);
-	psi_in_deg = -1*Math.abs(psi_in_deg);
+    	alpha_in_deg = -1*Math.abs(alpha_in_deg);
+    	psi_in_deg = -1*Math.abs(psi_in_deg);
     }
 
     var psi = psi_in_deg; //to_degrees(acos(psi_in_deg));      
@@ -116,7 +119,7 @@ function solveCDPos(quad, theta) {
     var d = rotateOffRef(bPos(quad),
 			 normalize( minus(bPos(quad), aPos(quad)) ),
 			 bdLen(quad),
-			 theta4); //dPos(quad);
+			 theta4);
 
     return [c, d];
 }
