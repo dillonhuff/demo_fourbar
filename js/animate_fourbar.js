@@ -6,25 +6,20 @@ var container;
 // NOTE: cameraTarget will not be needed once trackball controls are used
 var camera, cameraTarget, scene, renderer, controls;
 
+var theta_2, phase_inc;
+
 init();
 animate();
 
-function openAttachment() {
-    document.getElementById('attachement').click();
-}
-
-function fileSelected(input){
-    load_stl(input.files[0]);
-    document.getElementById('btnAttachment').value = "File: " + input.files[0].name
-}
-
 function init() {
+    theta_2 = 0;
+    phase_inc = Math.PI / 30;
 
     container = document.createElement( 'div' );
     document.body.appendChild( container );
 
     camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 15 );
-    camera.position.set( 3, 0.15, 3 );
+    camera.position.set( 0, 0, 3 );
 
     controls = new THREE.TrackballControls( camera );
     controls.rotateSpeed = 3.0;
@@ -41,17 +36,16 @@ function init() {
 
     var fog_color = 0xfefefe;
 
-    // Binary files
-    var material = new THREE.MeshPhongMaterial( { color: 0xAAAAAA, specular: 0x111111, shininess: 200 } );
 
     // Lights
 
-    scene.add( new THREE.HemisphereLight( 0x000000, 0xdddddd ) ); //0xdddddd, 0xdddddd )); //0x111122)); //0x443333, 0x111122 ) );
+    scene.add( new THREE.HemisphereLight( 0x000000, 0xdddddd ) );
 
     addShadowedLight( 10, 10, 10, 0xffffff, 1.35 );
-    addShadowedLight( 5, 10, -10, 0xffffff); //0xffaa00, 1 );
+    addShadowedLight( 5, 10, -10, 0xffffff);
 
-    addLine(scene, camera);
+    // Line
+    addLine(scene, theta_2);
 
     // renderer
 
@@ -105,8 +99,6 @@ function onWindowResize() {
     controls.handleResize();
     render();
     
-//    renderer.setSize( window.innerWidth, window.innerHeight );
-
 }
 
 function animate() {
@@ -131,9 +123,9 @@ function render() {
 
 }
 
-function addLine(sc) {
+function addLine(sc, th) {
     var a = new THREE.Vector3(0, 0, 0);
-    var b = new THREE.Vector3(1, 1, 0);
+    var b = new THREE.Vector3(Math.sin(th), Math.cos(th), 0);
 
     var lineMat = new THREE.LineBasicMaterial({
 	color: 0x000000
@@ -147,31 +139,6 @@ function addLine(sc) {
 
     var bb = new THREE.Box3();
     bb.setFromObject( stockLines );
-    //bb.center(controls.target);
+    bb.center(controls.target);
 
 }
-
-// function load_stl(file_name) {
-//     var loader = new THREE.STLLoader();
-//     alert(file_name.name);
-//     loader.load( file_name, function ( geometry ) {
-
-// 	var material = new THREE.MeshPhongMaterial( { color: 0xff5533, specular: 0x111111, shininess: 200 } );
-// 	var mesh = new THREE.Mesh( geometry, material );
-
-// 	mesh.position.set( 0, - 0.25, 0.6 );
-// 	mesh.rotation.set( 0, - Math.PI / 2, 0 );
-// 	mesh.scale.set( 0.5, 0.5, 0.5 );
-
-// 	mesh.castShadow = true;
-// 	mesh.receiveShadow = true;
-
-// 	scene.add( mesh );
-
-// 	var bb = new THREE.Box3()
-// 	bb.setFromObject(mesh);
-// 	bb.center(controls.target);    
-	
-//     } );
-
-// }
