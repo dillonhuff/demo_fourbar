@@ -11,6 +11,7 @@ function bPos(q) { return q.b; }
 function bdLen(q) { return q.bd_len; }
 function acLen(q) { return q.ac_len; }
 function cdLen(q) { return q.cd_len; }
+function abLen(q) { return minus( aPos(q), bPos(q) ).length(); }
 
 function cPos(q, th) {
     var k = normalize( minus( bPos(q), aPos(q) ) );
@@ -144,5 +145,21 @@ function solveCDPos(quad, theta) {
 			 theta4);
 
     return [c, d];
+}
+
+function sortNumber(a, b) {
+    return a - b;
+}
+
+function isGreshof(quad) {
+    var lengths = [acLen(quad), bdLen(quad), cdLen(quad), abLen(quad)];
+    lengths.sort(sortNumber);
+    var min = lengths[0];
+    var max = lengths[3];
+
+    var p = lengths[1];
+    var q = lengths[2];
+    
+    return min + max <= p + q;
 }
 

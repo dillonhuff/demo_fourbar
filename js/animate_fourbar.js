@@ -134,7 +134,7 @@ function render() {
 }
 
 function addLine(sc, th) {
-    var ac_len = 0.5; //0.3; //1.0; //0.5;
+    var ac_len = 0.7; //0.3; //1.0; //0.5;
     var bd_len = 1.5; //0.75;
     var cd_len = 1.4; //2.0;
 
@@ -146,8 +146,14 @@ function addLine(sc, th) {
 			  cd_len
 			 );
 
-    var a = aPos(quad);
-    var b = bPos(quad);
+    if (!isGreshof( quad ) ) {
+	alert('Non greshof linkage!');
+    }
+
+    var fbl = new FourbarLinkage(quad, 0.7, Math.PI / 3.0);
+
+    var a = fbl.aPos(); //quad);
+    var b = fbl.bPos();  //quad);
 
     var cd = solveCDPos(quad, th);
     var c = cd[0];
