@@ -51,6 +51,8 @@ function init() {
     addShadowedLight( 10, 10, 10, 0xffffff, 1.35 );
     addShadowedLight( 5, 10, -10, 0xffffff); //0xffaa00, 1 );
 
+    addLine(scene, camera);
+
     // renderer
 
     renderer = new THREE.WebGLRenderer( { antialias: true } );
@@ -129,27 +131,47 @@ function render() {
 
 }
 
-function load_stl(file_name) {
-    var loader = new THREE.STLLoader();
-    alert(file_name.name);
-    loader.load( file_name, function ( geometry ) {
+function addLine(sc) {
+    var a = new THREE.Vector3(0, 0, 0);
+    var b = new THREE.Vector3(1, 1, 0);
 
-	var material = new THREE.MeshPhongMaterial( { color: 0xff5533, specular: 0x111111, shininess: 200 } );
-	var mesh = new THREE.Mesh( geometry, material );
+    var lineMat = new THREE.LineBasicMaterial({
+	color: 0x000000
+    });    
 
-	mesh.position.set( 0, - 0.25, 0.6 );
-	mesh.rotation.set( 0, - Math.PI / 2, 0 );
-	mesh.scale.set( 0.5, 0.5, 0.5 );
+    var lineGeom = new THREE.Geometry();
+    lineGeom.vertices.push(a, b);
 
-	mesh.castShadow = true;
-	mesh.receiveShadow = true;
+    var stockLines = new THREE.Line( lineGeom, lineMat );
+    sc.add(stockLines);
 
-	scene.add( mesh );
-
-	var bb = new THREE.Box3()
-	bb.setFromObject(mesh);
-	bb.center(controls.target);    
-	
-    } );
+    var bb = new THREE.Box3();
+    bb.setFromObject( stockLines );
+    //bb.center(controls.target);
 
 }
+
+// function load_stl(file_name) {
+//     var loader = new THREE.STLLoader();
+//     alert(file_name.name);
+//     loader.load( file_name, function ( geometry ) {
+
+// 	var material = new THREE.MeshPhongMaterial( { color: 0xff5533, specular: 0x111111, shininess: 200 } );
+// 	var mesh = new THREE.Mesh( geometry, material );
+
+// 	mesh.position.set( 0, - 0.25, 0.6 );
+// 	mesh.rotation.set( 0, - Math.PI / 2, 0 );
+// 	mesh.scale.set( 0.5, 0.5, 0.5 );
+
+// 	mesh.castShadow = true;
+// 	mesh.receiveShadow = true;
+
+// 	scene.add( mesh );
+
+// 	var bb = new THREE.Box3()
+// 	bb.setFromObject(mesh);
+// 	bb.center(controls.target);    
+	
+//     } );
+
+// }
