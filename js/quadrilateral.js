@@ -13,7 +13,7 @@ function acLen(q) { return q.ac_len; }
 function cdLen(q) { return q.cd_len; }
 
 function cPos(q, th) {
-    var k = minus( bPos(q), aPos(q) );
+    var k = normalize( minus( bPos(q), aPos(q) ) );
     return rotateOffRef( aPos(q), k, acLen(q), th);
 }
 
@@ -51,23 +51,25 @@ function solveTheta4(quad, theta_val) {
 
     //alert('psi_num = ' + psi_num);
 
-    var psi_in_deg = psi_num / psi_denom;
+    var psi = psi_num / psi_denom;
 
     //alert('psi_in_deg = ' + psi_in_deg);
 
-    var alpha_in_deg =
+    var alpha =
 	(r7sq + r1*r1 - r2*r2) / (2*r1*r7);
 
     if (doubleWithinEps(theta_2, Math.PI / 2.0, Math.PI / 2.0)) {
-    	alpha_in_deg = Math.abs(alpha_in_deg);
-    	psi_in_deg = Math.abs(psi_in_deg);
+    	//alert('within eps');
+    	alpha = Math.abs(alpha);
+    	psi = Math.abs(psi);
     } else {
-    	alpha_in_deg = -1*Math.abs(alpha_in_deg);
-    	psi_in_deg = -1*Math.abs(psi_in_deg);
+    	//alert('not within eps');
+    	alpha = -1*Math.abs(alpha);
+    	psi = -1*Math.abs(psi);
     }
 
-    var psi = psi_in_deg; //to_degrees(acos(psi_in_deg));      
-    var alpha = alpha_in_deg; //to_degrees(acos(alpha_in_deg));
+    // var psi = psi_in_deg; //to_degrees(acos(psi_in_deg));      
+    // var alpha = alpha_in_deg; //to_degrees(acos(alpha_in_deg));
 
     //alert('alpha = ' + alpha + '\npsi = ' + psi);
 
@@ -115,11 +117,11 @@ function rotateOffRef(center,
 function solveCDPos(quad, theta) {
     var c = cPos(quad, theta);
 
-    var theta4 = solveTheta4(quad, theta);
+    //var theta4 = solveTheta4(quad, theta);
     var d = rotateOffRef(bPos(quad),
 			 normalize( minus(bPos(quad), aPos(quad)) ),
 			 bdLen(quad),
-			 theta4);
+			 theta); //theta4);
 
     return [c, d];
 }
