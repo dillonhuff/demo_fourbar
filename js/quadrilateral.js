@@ -23,8 +23,6 @@ function doubleWithinEps( x, y, eps ) {
 }
 
 function solveTheta4(quad, theta_val) {
-    //return theta_val;
-
     var r1 = ( minus( bPos(quad), aPos(quad) ) ).length();
     var r2 = acLen(quad);
     var r3 = cdLen(quad);
@@ -34,7 +32,7 @@ function solveTheta4(quad, theta_val) {
 
     var cos_theta = Math.cos( theta );
 
-    alert('cos_theta = ' + cos_theta);
+    //alert('cos_theta = ' + cos_theta);
 
     var r7sq = r1*r1 + r2*r2 - 2*r1*r2*cos_theta;
 
@@ -44,10 +42,10 @@ function solveTheta4(quad, theta_val) {
 
     var r7 = Math.sqrt(r7sq);
 
-    alert('r7 = ' + r7);
-    alert('r7*r7 = ' + r7sq);
-    alert('r4 = ' + r4);
-    alert('r2 = ' + r2);
+    // alert('r7 = ' + r7);
+    // alert('r7*r7 = ' + r7sq);
+    // alert('r4 = ' + r4);
+    // alert('r2 = ' + r2);
 
     var psi_denom = 2*r7*r4;
 
@@ -61,24 +59,29 @@ function solveTheta4(quad, theta_val) {
 
     var alpha_num = r2*r2 - r7sq - r1*r1;
 
-    alert('alpha_num = ' + alpha_num);
+    //alert('alpha_num = ' + alpha_num);
 
     var alpha_denom = 2*r1*r7;
-    alert('alpha_denom = ' + alpha_denom);
+    //alert('alpha_denom = ' + alpha_denom);
 
     var alpha_pre = alpha_num / alpha_denom;
 
-    alert('alpha_pre = ' + alpha_pre);
+    //alert('alpha_pre = ' + alpha_pre);
 
     var alpha =
 	Math.acos(alpha_pre);
 
-    alert('psi = ' + psi + '\nalpha = ' + alpha);
+    //alert('psi = ' + psi + '\nalpha = ' + alpha);
 
-    if (!doubleWithinEps(theta_2, Math.PI / 2.0, Math.PI / 2.0)) {
+    if (!doubleWithinEps(theta_val, Math.PI / 2.0, Math.PI / 2.0)) {
     	//alert('within eps');
-    	alpha = Math.abs(alpha);
-    	psi = Math.abs(psi);
+	if (acLen(quad) >= bdLen(quad)) {
+    	    alpha = Math.abs(alpha);
+    	    psi = Math.abs(psi);
+	} else {
+	    alpha = Math.abs(alpha);
+    	    psi = -1*Math.abs(psi);
+	}
     } else {
     	//alert('not within eps');
     	alpha = -1*Math.abs(alpha);
@@ -134,7 +137,7 @@ function rotateOffRef(center,
 function solveCDPos(quad, theta) {
     var c = cPos(quad, theta);
 
-    var theta4 = solveTheta4(quad, theta); //Math.PI / 2.0); //theta);
+    var theta4 = solveTheta4(quad, theta);
     var d = rotateOffRef(bPos(quad),
 			 normalize( minus(bPos(quad), aPos(quad)) ),
 			 bdLen(quad),

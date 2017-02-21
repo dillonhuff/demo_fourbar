@@ -14,7 +14,7 @@ animate();
 
 function init() {
     theta_2 = 0;
-    phase_inc = Math.PI / 300;
+    phase_inc = Math.PI / 150;
 
     lineGeom = new THREE.Geometry();
 
@@ -134,7 +134,7 @@ function render() {
 }
 
 function addLine(sc, th) {
-    var ac_len = 1.0; //0.5;
+    var ac_len = 0.3; //1.0; //0.5;
     var bd_len = 1.0; //0.75;
     var cd_len = 1.0; //2.0;
 
