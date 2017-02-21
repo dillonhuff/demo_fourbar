@@ -1,14 +1,12 @@
-function Quadrilateral( a, b, d, ac_len, bd_len ) {
+function Quadrilateral( a, b, ac_len, bd_len ) {
     this.a = a;
     this.b = b;
-    this.d = d;
     this.ac_len = ac_len;
     this.bd_len = bd_len;
 }
 
 function aPos(q) { return q.a; }
 function bPos(q) { return q.b; }
-function dPos(q) { return q.d; }
 function bdLen(q) { return q.bd_len; }
 
 function cPos(q, th) {
@@ -16,7 +14,8 @@ function cPos(q, th) {
 }
 
 function solveTheta4(quad, theta) {
-    return Math.PI / 3.0;
+    //alert('theta = ' + theta);
+    return theta; // + Math.PI / 30.0; // 
 }
 
 function normalize( vec ) {
@@ -48,9 +47,6 @@ function rotated( v , angle) {
     var ry = Math.sin( angle ) * v.x + Math.cos( angle ) * v.y;
     var rv = new THREE.Vector3(rx, ry, v.z);
     return rv;
-    // return vec2(cos(angle_rads)*x() - sin(angle_rads)*y(),
-    // 		sin(angle_rads)*x() + cos(angle_rads)*y());
-    
 }
 
 function rotateOffRef(center,

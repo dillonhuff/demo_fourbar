@@ -137,7 +137,6 @@ function addLine(sc, th) {
     var quad =
 	new Quadrilateral(new THREE.Vector3(0, 0, 0),
 			  new THREE.Vector3(1.5, 0, 0),
-			  new THREE.Vector3(2.2, 1.5, 0),
 			  ac_len,
 			  bd_len
 			 );
@@ -153,6 +152,7 @@ function addLine(sc, th) {
 	stockLines.geometry.vertices.push(b, a, c, d, b);
     } else {
 	stockLines.geometry.vertices[2] = c;
+	stockLines.geometry.vertices[3] = d;
     }
     stockLines.geometry.verticesNeedUpdate = true;
 
