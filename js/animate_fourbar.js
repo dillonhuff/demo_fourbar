@@ -130,9 +130,26 @@ function render() {
 
 }
 
+function Quadrilateral( a, b, d ) {
+    this.a = a;
+    this.b = b;
+    this.d = d;
+}
+
+function aPos(q) { return q.a; }
+function bPos(q) { return q.b; }
+function dPos(q) { return q.d; }
+function cPos(q, th) { return new THREE.Vector3(Math.sin(th), Math.cos(th), 0); }
+
 function addLine(sc, th) {
-    var a = new THREE.Vector3(0, 0, 0);
-    var c = new THREE.Vector3(Math.sin(th), Math.cos(th), 0);
+    var quad =
+	new Quadrilateral(new THREE.Vector3(0, 0, 0),
+			  new THREE.Vector3(1.5, 0, 0),
+			  new THREE.Vector3(2.2, 1.5, 0)
+			 );
+
+    var a = aPos(quad); //new THREE.Vector3(quad.aPos().x, quad.aPos().y, quad.aPos().z); //new THREE.Vector3(0, 0, 0);
+    var c = cPos(quad, th);
 
     var b = new THREE.Vector3(1.5, 0, 0);
     var d = new THREE.Vector3(2.2, 1.5, 0);
