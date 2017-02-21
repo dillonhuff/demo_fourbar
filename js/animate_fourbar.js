@@ -9,13 +9,12 @@ var camera, cameraTarget, scene, renderer, controls;
 var theta_2, phase_inc;
 var lineGeom, lineMat, stockLines;
 
-
 init();
 animate();
 
 function init() {
     theta_2 = 0;
-    phase_inc = Math.PI / 30;
+    phase_inc = Math.PI / 60;
 
     lineGeom = new THREE.Geometry();
 
@@ -29,7 +28,7 @@ function init() {
     document.body.appendChild( container );
 
     camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 15 );
-    camera.position.set( 0, 0, 3 );
+    camera.position.set( 0, 0, 6 );
 
     controls = new THREE.TrackballControls( camera );
     controls.rotateSpeed = 3.0;
@@ -127,25 +126,21 @@ function animate() {
 
 function render() {
 
-    // var timer = Date.now() * 0.0005;
-
-    // camera.position.x = Math.cos( timer ) * 3;
-    // camera.position.z = Math.sin( timer ) * 3;
-
-    // camera.lookAt( cameraTarget );
-
     renderer.render( scene, camera );
 
 }
 
 function addLine(sc, th) {
-    var b = new THREE.Vector3(Math.sin(th), Math.cos(th), 0);
+    var a = new THREE.Vector3(0, 0, 0);
+    var c = new THREE.Vector3(Math.sin(th), Math.cos(th), 0);
+
+    var b = new THREE.Vector3(1.5, 0, 0);
+    var d = new THREE.Vector3(2.2, 1.5, 0);
 
     if (stockLines.geometry.vertices.length == 0) {
-	var a = new THREE.Vector3(0, 0, 0);
-	stockLines.geometry.vertices.push(a, b);
+	stockLines.geometry.vertices.push(b, a, c, d, b);
     } else {
-	stockLines.geometry.vertices[1] = b;
+	stockLines.geometry.vertices[2] = c;
     }
     stockLines.geometry.verticesNeedUpdate = true;
 
