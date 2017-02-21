@@ -133,12 +133,14 @@ function render() {
 function addLine(sc, th) {
     var ac_len = 0.5;
     var bd_len = 0.75;
+    var cd_len = 0.35;
 
     var quad =
 	new Quadrilateral(new THREE.Vector3(0, 0, 0),
 			  new THREE.Vector3(1.5, 0, 0),
 			  ac_len,
-			  bd_len
+			  bd_len,
+			  cd_len
 			 );
 
     var a = aPos(quad);
