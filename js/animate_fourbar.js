@@ -133,7 +133,7 @@ function render() {
 function addLine(sc, th) {
     var ac_len = 0.5;
     var bd_len = 0.75;
-    var cd_len = 0.35;
+    var cd_len = 1.0;
 
     var quad =
 	new Quadrilateral(new THREE.Vector3(0, 0, 0),

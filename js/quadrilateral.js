@@ -3,6 +3,7 @@ function Quadrilateral( a, b, ac_len, bd_len, cd_len ) {
     this.b = b;
     this.ac_len = ac_len;
     this.bd_len = bd_len;
+    this.cd_len = cd_len;
 }
 
 function aPos(q) { return q.a; }
@@ -17,7 +18,7 @@ function cPos(q, th) {
 
 function doubleWithinEps( x, y, eps ) {
     var diff = Math.abs(x - y);
-    return diff;
+    return diff < eps;
 }
 
 function solveTheta4(quad, theta) {
@@ -26,7 +27,6 @@ function solveTheta4(quad, theta) {
     var r3 = cdLen(quad);
     var r4 = bdLen(quad);
 
-    var theta_rads = (theta_2*Math.PI) / 180.0;
     var cos_theta = Math.cos( theta );
 
     var r7sq = r1*r1 + r2*r2 - 2*r1*r2*cos_theta;
@@ -35,25 +35,40 @@ function solveTheta4(quad, theta) {
 	return 0.0;
     }
 
-    var r7 = sqrt(r7sq);
+    var r7 = Math.sqrt(r7sq);
 
-    var psi_in_deg = (r3*r3 - r7sq - r4*r4) / (2*r7*r4);
+    // alert('r7 = ' + r7);
+    // alert('r4 = ' + r4);
+
+    var psi_denom = 2*r7*r4;
+
+    //alert('psi_denom = ' + psi_denom);
+
+    var psi_num = r3*r3 - r7sq - r4*r4;
+
+    //alert('psi_num = ' + psi_num);
+
+    var psi_in_deg = psi_num / psi_denom;
+
+    //alert('psi_in_deg = ' + psi_in_deg);
 
     var alpha_in_deg =
 	(r7sq + r1*r1 - r2*r2) / (2*r1*r7);
 
-    if (within_eps(theta_2, 90.0, 90.0)) {
-	alpha_in_deg = fabs(alpha_in_deg);
-	psi_in_deg = fabs(psi_in_deg);
+    if (doubleWithinEps(theta_2, 90.0, 90.0)) {
+	alpha_in_deg = Math.abs(alpha_in_deg);
+	psi_in_deg = Math.abs(psi_in_deg);
     } else {
-	alpha_in_deg = -1*fabs(alpha_in_deg);
-	psi_in_deg = -1*fabs(psi_in_deg);
+	alpha_in_deg = -1*Math.abs(alpha_in_deg);
+	psi_in_deg = -1*Math.abs(psi_in_deg);
     }
 
-    var psi = to_degrees(acos(psi_in_deg));      
-    var alpha = to_degrees(acos(alpha_in_deg));
+    var psi = psi_in_deg; //to_degrees(acos(psi_in_deg));      
+    var alpha = alpha_in_deg; //to_degrees(acos(alpha_in_deg));
 
-    return MATH.PI - alpha - psi;
+    //alert('alpha = ' + alpha + '\npsi = ' + psi);
+
+    return Math.PI - alpha - psi;
 }
 
 function normalize( vec ) {
