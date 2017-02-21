@@ -130,43 +130,24 @@ function render() {
 
 }
 
-function Quadrilateral( a, b, d, ac_len ) {
-    this.a = a;
-    this.b = b;
-    this.d = d;
-    this.ac_len = ac_len;
-}
-
-function aPos(q) { return q.a; }
-function bPos(q) { return q.b; }
-function dPos(q) { return q.d; }
-
-function cPos(q, th) {
-    return new THREE.Vector3(q.ac_len*Math.sin(th), q.ac_len*Math.cos(th), 0);
-}
-
-function solveCDPos(quad, theta) {
-    var c = cPos(quad, theta);
-    var d = dPos(quad);
-
-    return [c, d];
-}
-
 function addLine(sc, th) {
     var ac_len = 0.5;
+    var bd_len = 0.75;
+
     var quad =
 	new Quadrilateral(new THREE.Vector3(0, 0, 0),
 			  new THREE.Vector3(1.5, 0, 0),
 			  new THREE.Vector3(2.2, 1.5, 0),
-			  ac_len
+			  ac_len,
+			  bd_len
 			 );
 
     var a = aPos(quad);
     var b = bPos(quad);
 
     var cd = solveCDPos(quad, th);
-    var c = cd[0]; //cPos(quad, th);
-    var d = cd[1]; //dPos(quad);
+    var c = cd[0];
+    var d = cd[1];
 
     if (stockLines.geometry.vertices.length == 0) {
 	stockLines.geometry.vertices.push(b, a, c, d, b);
