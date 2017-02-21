@@ -155,9 +155,10 @@ function addLine(sc, th) {
     var a = fbl.aPos(); //quad);
     var b = fbl.bPos();  //quad);
 
-    var cd = solveCDPos(quad, th);
-    var c = cd[0];
-    var d = cd[1];
+    var cde = fbl.solveCDEPos(th);
+    var c = cde[0];
+    var d = cde[1];
+    var e = cde[2];
 
     if (stockLines.geometry.vertices.length == 0) {
 	stockLines.geometry.vertices.push(b, a, c, d, b);
