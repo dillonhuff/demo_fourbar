@@ -43,7 +43,7 @@ function init() {
     });    
 
     couplerCurveMat = new THREE.LineBasicMaterial({
-	color: 0x00ff00
+	color: 0xff00ff
     });    
     
     stockLines = new THREE.Line( lineGeom, lineMat );
@@ -71,6 +71,7 @@ function init() {
 
     scene.add(stockLines);
     scene.add(couplerLines);
+    scene.add(couplerCurveLines);
     
     var fog_color = 0xfefefe;
 
@@ -89,8 +90,11 @@ function init() {
     
     var tht = 0.0;
     while (tht < 2*Math.PI) {
+	couplerCurveLines.geometry.vertices.push( fbl.solveCDEPos(tht)[2] );
 	tht += phase_inc;
     }
+
+    couplerCurveLines.geometry.verticesNeedUpdate = true;
 
     // renderer
 
