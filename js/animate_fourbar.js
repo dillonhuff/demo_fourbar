@@ -56,16 +56,16 @@ function init() {
     camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 15 );
     camera.position.set( 0, 0, 6 );
 
-    controls = new THREE.TrackballControls( camera );
-    controls.rotateSpeed = 3.0;
-    controls.zoomSpeed = 1.2;
-    controls.panSpeed = 0.8;
-    controls.noZoom = false;
-    controls.noPan = false;
-    controls.staticMoving = true;
-    controls.dynamicDampingFactor = 0.0;
-    controls.keys = [ 65, 83, 68 ];
-    controls.addEventListener( 'change', render );
+    // controls = new THREE.TrackballControls( camera );
+    // controls.rotateSpeed = 3.0;
+    // controls.zoomSpeed = 1.2;
+    // controls.panSpeed = 0.8;
+    // controls.noZoom = false;
+    // controls.noPan = false;
+    // controls.staticMoving = true;
+    // controls.dynamicDampingFactor = 0.0;
+    // controls.keys = [ 65, 83, 68 ];
+    // controls.addEventListener( 'change', render );
 
     scene = new THREE.Scene();
 
@@ -145,7 +145,7 @@ function onWindowResize() {
     camera.updateProjectionMatrix();
 
     renderer.setSize( window.innerWidth, window.innerHeight );
-    controls.handleResize();
+    //controls.handleResize();
     render();
     
 }
@@ -161,7 +161,7 @@ function animate() {
     }
 
     render();
-    controls.update();
+    //controls.update();
 
 }
 
@@ -198,3 +198,18 @@ function addLine(sc, fbl, th) {
     couplerLines.geometry.verticesNeedUpdate = true;
 
 }
+
+var FizzyText = function() {
+  this.message = 'dat.gui';
+  this.speed = 0.8;
+  this.displayOutline = false;
+};
+
+window.onload = function() {
+  var text = new FizzyText();
+  var gui = new dat.GUI();
+  gui.add(text, 'message');
+  gui.add(text, 'speed', -5, 5);
+  gui.add(text, 'displayOutline');
+  gui.add(text, 'explode');
+};
