@@ -7,25 +7,25 @@ var container;
 var camera, cameraTarget, scene, renderer, controls;
 
 var theta_2, phase_inc;
-var lineGeom, lineMat, stockLines, couplerLine;
+var lineGeom, lineMat, stockLines, couplerLine, couplerCurveLines;
 
-    var ac_len = 0.7; //0.3; //1.0; //0.5;
-    var bd_len = 1.5; //0.75;
-    var cd_len = 1.4; //2.0;
+var ac_len = 0.7; //0.3; //1.0; //0.5;
+var bd_len = 1.5; //0.75;
+var cd_len = 1.4; //2.0;
 
-    var quad =
-	new Quadrilateral(new THREE.Vector3(0, 0, 0),
-			  new THREE.Vector3(1.0, 0, 0),
-			  ac_len,
-			  bd_len,
-			  cd_len
-			 );
+var quad =
+    new Quadrilateral(new THREE.Vector3(0, 0, 0),
+		      new THREE.Vector3(1.0, 0, 0),
+		      ac_len,
+		      bd_len,
+		      cd_len
+		     );
 
-    if (!isGreshof( quad ) ) {
-	alert('Non greshof linkage!');
-    }
+if (!isGreshof( quad ) ) {
+    alert('Non greshof linkage!');
+}
 
-    var fbl = new FourbarLinkage(quad, 0.7, Math.PI / 3.0);
+var fbl = new FourbarLinkage(quad, 0.7, Math.PI / 3.0);
 
 init();
 animate();
@@ -36,13 +36,19 @@ function init() {
 
     lineGeom = new THREE.Geometry();
     couplerGeom = new THREE.Geometry();
+    couplerCurveGeom = new THREE.Geometry();
 
     lineMat = new THREE.LineBasicMaterial({
 	color: 0x000000
     });    
 
+    couplerCurveMat = new THREE.LineBasicMaterial({
+	color: 0x00ff00
+    });    
+    
     stockLines = new THREE.Line( lineGeom, lineMat );
     couplerLines = new THREE.Line( couplerGeom, lineMat );
+    couplerCurveLines = new THREE.Line( couplerCurveGeom, couplerCurveMat );
     
     container = document.createElement( 'div' );
     document.body.appendChild( container );
@@ -78,6 +84,13 @@ function init() {
 
     // Line
     //addLine(scene, theta_2);
+
+    // Initial curve
+    
+    var tht = 0.0;
+    while (tht < 2*Math.PI) {
+	tht += phase_inc;
+    }
 
     // renderer
 
