@@ -7,6 +7,8 @@ var FizzyText = function() {
     this.crankLength = 0.7;
     this.bdLength = 1.5;
     this.cdLength = 1.4;
+    this.angle = Math.PI / 3.0;
+    this.length = 0.7;
 };
 
 
@@ -18,6 +20,8 @@ window.onload = function() {
     gui.add(text, 'crankLength', 0.001, 5.0);
     gui.add(text, 'bdLength', 0.001, 5.0);
     gui.add(text, 'cdLength', 0.001, 5.0);
+    gui.add(text, 'angle', 0.000, Math.PI / 2.0);
+    gui.add(text, 'length', 0.000, 5);
 };
 
 
@@ -65,27 +69,6 @@ function init() {
     
     var fog_color = 0xfefefe;
 
-
-    // Lights
-
-    scene.add( new THREE.HemisphereLight( 0x000000, 0xdddddd ) );
-
-    addShadowedLight( 10, 10, 10, 0xffffff, 1.35 );
-    addShadowedLight( 5, 10, -10, 0xffffff);
-
-    // Line
-    //addLine(scene, theta_2);
-
-    // Initial curve
-    // var tht = 0.0;
-    // var tht_inc = Math.PI / 30.0;
-    // while (tht < 2*Math.PI) {
-    // 	couplerCurveLines.geometry.vertices.push( fbl.solveCDEPos(tht)[2] );
-    // 	tht += tht_inc;
-    // }
-
-    couplerCurveLines.geometry.verticesNeedUpdate = true;
-
     // renderer
     renderer = new THREE.WebGLRenderer( { antialias: true } );
     renderer.setClearColor( fog_color );
@@ -101,30 +84,6 @@ function init() {
     container.appendChild( renderer.domElement );
 
     window.addEventListener( 'resize', onWindowResize, false );
-
-}
-
-function addShadowedLight( x, y, z, color, intensity ) {
-
-    var directionalLight = new THREE.DirectionalLight( color, intensity );
-    directionalLight.position.set( x, y, z );
-    scene.add( directionalLight );
-
-    directionalLight.castShadow = true;
-
-    var d = 1;
-    directionalLight.shadow.camera.left = -d;
-    directionalLight.shadow.camera.right = d;
-    directionalLight.shadow.camera.top = d;
-    directionalLight.shadow.camera.bottom = -d;
-
-    directionalLight.shadow.camera.near = 1;
-    directionalLight.shadow.camera.far = 4;
-
-    directionalLight.shadow.mapSize.width = 1024;
-    directionalLight.shadow.mapSize.height = 1024;
-
-    directionalLight.shadow.bias = -0.005;
 
 }
 
@@ -160,10 +119,6 @@ function render() {
 
 function addLine(sc, th) {
 
-    var ac_len = 0.7; //0.3; //1.0; //0.5;
-    var bd_len = 1.5; //0.75;
-    var cd_len = 1.4; //2.0;
-
     var quad =
 	new Quadrilateral(new THREE.Vector3(0, 0, 0),
 			  new THREE.Vector3(1.0, 0, 0),
@@ -176,17 +131,37 @@ function addLine(sc, th) {
 	alert('Non greshof linkage!');
     }
 
-    var fbl = new FourbarLinkage(quad, 0.7, Math.PI / 3.0);
-
+    var fbl = new FourbarLinkage(quad, text.length, text.angle); //0.7, Math.PI / 3.0);
     
-    var a = fbl.aPos(); //quad);
-    var b = fbl.bPos();  //quad);
+    var a = fbl.aPos();
+    var b = fbl.bPos();
 
     var cde = fbl.solveCDEPos(th);
     var c = cde[0];
     var d = cde[1];
     var e = cde[2];
 
+
+    //Initial curve
+    if (couplerCurveLines.geometry.vertices.length == 0) {
+	var tht = 0.0;
+	var tht_inc = Math.PI / 30.0;
+	while (tht < 2*Math.PI) {
+    	    couplerCurveLines.geometry.vertices.push( fbl.solveCDEPos(tht)[2] );
+    	    tht += tht_inc;
+	}
+    } else {
+	var tht = 0.0;
+	var tht_inc = Math.PI / 30.0;
+	var i = 0;
+	while (tht < 2*Math.PI) {
+    	    couplerCurveLines.geometry.vertices[i] = fbl.solveCDEPos(tht)[2];
+    	    tht += tht_inc;
+	    i++;
+	}
+    }
+    couplerCurveLines.geometry.verticesNeedUpdate = true;
+    
     if (stockLines.geometry.vertices.length == 0) {
 	stockLines.geometry.vertices.push(b, a, c, d, b);
     } else {
