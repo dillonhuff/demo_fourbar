@@ -59,7 +59,7 @@ function init() {
     addShadowedLight( 5, 10, -10, 0xffffff);
 
     // Line
-    addLine(scene, theta_2);
+    //addLine(scene, theta_2);
 
     // renderer
 
@@ -119,24 +119,6 @@ function animate() {
 
     requestAnimationFrame( animate );
 
-    addLine(scene, theta_2);
-    theta_2 = theta_2 + phase_inc;
-    if (theta_2 > 2*Math.PI) {
-	theta_2 = theta_2 - 2*Math.PI;
-    }
-
-    render();
-    controls.update();
-
-}
-
-function render() {
-
-    renderer.render( scene, camera );
-
-}
-
-function addLine(sc, th) {
     var ac_len = 0.7; //0.3; //1.0; //0.5;
     var bd_len = 1.5; //0.75;
     var cd_len = 1.4; //2.0;
@@ -154,6 +136,42 @@ function addLine(sc, th) {
     }
 
     var fbl = new FourbarLinkage(quad, 0.7, Math.PI / 3.0);
+    
+    addLine(scene, fbl, theta_2);
+    theta_2 = theta_2 + phase_inc;
+    if (theta_2 > 2*Math.PI) {
+	theta_2 = theta_2 - 2*Math.PI;
+    }
+
+    render();
+    controls.update();
+
+}
+
+function render() {
+
+    renderer.render( scene, camera );
+
+}
+
+function addLine(sc, fbl, th) {
+    // var ac_len = 0.7; //0.3; //1.0; //0.5;
+    // var bd_len = 1.5; //0.75;
+    // var cd_len = 1.4; //2.0;
+
+    // var quad =
+    // 	new Quadrilateral(new THREE.Vector3(0, 0, 0),
+    // 			  new THREE.Vector3(1.0, 0, 0),
+    // 			  ac_len,
+    // 			  bd_len,
+    // 			  cd_len
+    // 			 );
+
+    // if (!isGreshof( quad ) ) {
+    // 	alert('Non greshof linkage!');
+    // }
+
+    // var fbl = new FourbarLinkage(quad, 0.7, Math.PI / 3.0);
 
     var a = fbl.aPos(); //quad);
     var b = fbl.bPos();  //quad);
